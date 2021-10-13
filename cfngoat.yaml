@@ -98,6 +98,27 @@ Resources:
         ToPort: 0
         CidrIp: 0.0.0.0/0
 
+  # Security Group  RDP port open to the world 
+  WebNodeSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub "${AWS::AccountId}-${CompanyName}-${Environment}-sg"
+      GroupDescription: !Sub "${AWS::AccountId}-${CompanyName}-${Environment} Security Group"
+      VpcId: !Ref WebVPC
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 3389
+        ToPort: 3389
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: -1
+        FromPort: 0
+        ToPort: 0
+        CidrIp: 0.0.0.0/0
+        
   WebVPC:
     Type: AWS::EC2::VPC
     Properties:
@@ -891,4 +912,3 @@ Outputs:
   DBEndpoint:
     Description: DB Endpoint 
     Value: !Sub ${DefaultDB.Endpoint.Address}:{DefaultDB.Endpoint.Port}
-
